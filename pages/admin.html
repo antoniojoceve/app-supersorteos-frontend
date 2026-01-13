@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin | Super Sorteos</title>
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+
+  <h1>Panel Admin</h1>
+  <button onclick="logout()">Cerrar sesión</button>
+
+  <h2>Crear sorteo</h2>
+  <form id="raffleForm">
+    <input type="text" id="title" placeholder="Título" required />
+    <input type="number" id="price" placeholder="Precio por número" required />
+    <input type="number" id="total" placeholder="Cantidad de números" required />
+    <button type="submit">Crear sorteo</button>
+  </form>
+
+  <h2>Sorteos existentes</h2>
+  <div id="raffles"></div>
+
+  <h2>Pedidos</h2>
+<table id="ordersTable">
+  <thead>
+    <tr>
+      <th>Sorteo</th>
+      <th>Número</th>
+      <th>Usuario</th>
+      <th>Estado</th>
+      <th>Fecha</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+
+  <script type="module" src="../js/admin.js"></script>
+
+</body>
+</html>
