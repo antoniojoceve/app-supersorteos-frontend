@@ -76,6 +76,12 @@ async function loadOrders() {
   });
 
   const orders = await res.json();
+
+  if (!Array.isArray(orders)) {
+    console.error("Orders no es un array:", orders);
+    return;
+  }
+
   const tbody = document.querySelector("#ordersTable tbody");
   tbody.innerHTML = "";
 
@@ -83,9 +89,9 @@ async function loadOrders() {
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${o.raffle_title}</td>
-      <td>${o.number}</td>
       <td>${o.user_email}</td>
-      <td>${o.status}</td>
+      <td>$${o.total_amount}</td>
+      <td>${o.payment_status}</td>
       <td>${new Date(o.created_at).toLocaleString()}</td>
     `;
     tbody.appendChild(tr);
