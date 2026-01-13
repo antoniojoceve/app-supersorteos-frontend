@@ -92,5 +92,10 @@ async function loadOrders() {
   });
 }
 
+window.logout = function () {
+  localStorage.clear();
+  window.location.href = "login.html";
+};
+
 loadRaffles();
 loadOrders();
