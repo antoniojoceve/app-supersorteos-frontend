@@ -1,0 +1,21 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #111;
+  color: #fff;
+  padding: 20px;
+}
+
+.raffle {
+  background: #1e1e1e;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+}
+
+button {
+  background: #00c853;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
