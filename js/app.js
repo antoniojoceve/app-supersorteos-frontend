@@ -20,3 +20,9 @@ fetch(`${API_URL}/api/raffles`)
   .catch(err => {
     console.error("Error cargando sorteos", err);
   });
+
+  function logout() {
+  localStorage.clear();
+  window.location.href = "login.html";
+}
+
