@@ -19,3 +19,19 @@ button {
   cursor: pointer;
   border-radius: 5px;
 }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+th {
+  background: #222;
+  color: white;
+}
