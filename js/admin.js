@@ -1,4 +1,4 @@
-import { API_URL, getAuthHeaders } from "./api.js";
+import { apiFetch } from "./api.js";
 import { getUser, logout } from "./authService.js";
 
 const user = getUser();
@@ -8,12 +8,7 @@ if (!user || user.role !== "admin") {
 }
 
 async function loadRaffles() {
-  const res = await fetch(`${API_URL}/api/raffles`, {
-    headers: {
-      ...getAuthHeaders(),
-    },
-  });
-
+  const res = await apiFetch("/api/raffles");
 
   const raffles = await res.json();
   const container = document.getElementById("raffles");
@@ -39,16 +34,12 @@ document.getElementById("raffleForm").addEventListener("submit", async (e) => {
   const price = document.getElementById("price").value;
   const total = document.getElementById("total").value;
 
-  const res = await fetch(`${API_URL}/api/raffles`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...getAuthHeaders(),
-    },
-    body: JSON.stringify({
-      title,
-      price_per_ticket: price,
-      total_numbers: total,
+  const res = await apiFetch("/api/raffles", {
+  method: "POST",
+  body: JSON.stringify({
+    title,
+    price_per_ticket: price,
+    total_numbers: total,
     }),
   });
 
@@ -64,17 +55,8 @@ document.getElementById("raffleForm").addEventListener("submit", async (e) => {
   loadRaffles();
 });
 
-function logout() {
-  localStorage.clear();
-  window.location.href = "login.html";
-}
-
 async function loadOrders() {
-  const res = await fetch(`${API_URL}/api/orders`, {
-    headers: {
-      ...getAuthHeaders(),
-    },
-  });
+  const res = await apiFetch("/api/orders");
 
   const orders = await res.json();
 
@@ -99,10 +81,7 @@ async function loadOrders() {
   });
 }
 
-window.logout = function () {
-  localStorage.clear();
-  window.location.href = "login.html";
-};
+window.logout = logout;
 
 loadRaffles();
 loadOrders();
