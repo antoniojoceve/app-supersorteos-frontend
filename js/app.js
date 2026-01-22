@@ -1,6 +1,6 @@
-const API_URL = "https://app-supersorteos.onrender.com";
+import { apiFetch } from "./api.js";
 
-fetch(`${API_URL}/api/raffles`)
+apiFetch("/api/raffles")
   .then(res => res.json())
   .then(data => {
     const container = document.getElementById("raffles");
@@ -20,9 +20,3 @@ fetch(`${API_URL}/api/raffles`)
   .catch(err => {
     console.error("Error cargando sorteos", err);
   });
-
-  function logout() {
-  localStorage.clear();
-  window.location.href = "login.html";
-}
-

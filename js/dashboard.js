@@ -1,16 +1,13 @@
-import { API_URL, getAuthHeaders } from "./api.js";
-const token = localStorage.getItem("token");
+import { apiFetch } from "./api.js";
+import { getUser, logout } from "./authService.js";
 
-if (!token) {
-  window.location.href = "login.html";
+const user = getUser();
+if (!user) {
+  logout();
 }
 
 async function loadRaffles() {
-  const res = await fetch(`${API_URL}/api/raffles`, {
-    headers: {
-      ...getAuthHeaders(),
-    },
-  });
+  const res = await apiFetch("/api/raffles");
 
   const raffles = await res.json();
   const container = document.getElementById("raffles");
@@ -35,12 +32,8 @@ async function buy(raffleId) {
   const number = prompt("¿Qué número quieres?");
   if (!number) return;
 
-  const res = await fetch(`${API_URL}/api/orders`, {
+  const res = await apiFetch("/api/orders", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      ...getAuthHeaders(),
-    },
     body: JSON.stringify({
       raffle_id: raffleId,
       number,
@@ -57,9 +50,6 @@ async function buy(raffleId) {
   alert("Número reservado correctamente 🎉");
 }
 
-function logout() {
-  localStorage.clear();
-  window.location.href = "login.html";
-}
+window.logout = logout;
 
 loadRaffles();
