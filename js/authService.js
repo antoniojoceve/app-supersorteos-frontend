@@ -22,5 +22,9 @@ export function isLoggedIn() {
 export function logout() {
   localStorage.removeItem(TOKEN_KEY);
   localStorage.removeItem(USER_KEY);
-  window.location.href = "login.html";
+
+  // Evita bucles raros si ya estamos en login
+  if (!window.location.pathname.includes("login")) {
+    window.location.href = "login.html";
+  }
 }
