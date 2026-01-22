@@ -1,4 +1,5 @@
 import { API_URL } from "./api.js";
+import { saveSession } from "./authService.js";
 
 const form = document.getElementById("loginForm");
 const errorEl = document.getElementById("error");
@@ -23,18 +24,12 @@ form.addEventListener("submit", async (e) => {
       return;
     }
 
-    // Guardamos token
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("user", JSON.stringify(data.user));
+    saveSession(data.token, data.user);
 
-    // Redirección por rol
-    if (data.user.role === "admin") {
-      window.location.href = "admin.html";
-    } else {
-      window.location.href = "dashboard.html";
-    }
+    window.location.href =
+      data.user.role === "admin" ? "admin.html" : "dashboard.html";
 
-  } catch (err) {
+  } catch {
     errorEl.textContent = "Servidor no disponible";
   }
 });

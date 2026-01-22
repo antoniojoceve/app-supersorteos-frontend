@@ -1,9 +1,10 @@
 import { API_URL, getAuthHeaders } from "./api.js";
-const token = localStorage.getItem("token");
-const user = JSON.parse(localStorage.getItem("user"));
+import { getUser, logout } from "./authService.js";
 
-if (!token || !user || user.role !== "admin") {
-  window.location.href = "login.html";
+const user = getUser();
+
+if (!user || user.role !== "admin") {
+  logout();
 }
 
 async function loadRaffles() {
