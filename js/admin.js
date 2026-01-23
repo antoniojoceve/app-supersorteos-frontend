@@ -70,6 +70,26 @@ document.getElementById("raffleForm").addEventListener("submit", async (e) => {
   loadRaffles();
 });
 
+async function handleOrderAction(orderId, action) {
+  try {
+    const res = await apiFetch(`/api/orders/${orderId}/${action}`, {
+      method: "PATCH",
+    });
+
+    if (!res.ok) {
+      const data = await res.json();
+      alert(data.error || "Error al procesar la orden");
+      return;
+    }
+
+    // Refrescamos tabla sin recargar página
+    loadOrders();
+  } catch (err) {
+    console.error(err);
+    alert("Error de red o sesión expirada");
+  }
+}
+
 async function loadOrders() {
   const res = await apiFetch("/api/orders");
   let orders;
@@ -99,7 +119,31 @@ async function loadOrders() {
       <td>$${o.total_amount}</td>
       <td>${getStatusLabel(o.payment_status)}</td>
       <td>${new Date(o.created_at).toLocaleString()}</td>
+      <td>
+        ${
+          o.payment_status === "pending"
+            ? `
+              <button class="approve-btn">Aprobar</button>
+              <button class="reject-btn">Rechazar</button>
+            `
+            : "-"
+        }
+      </td>
     `;
+
+    if (o.payment_status === "pending") {
+      tr.querySelector(".approve-btn").addEventListener("click", async () => {
+        if (!confirm("¿Seguro que quieres APROBAR esta orden?")) return;
+
+        await handleOrderAction(o.id, "approve");
+      });
+
+      tr.querySelector(".reject-btn").addEventListener("click", async () => {
+        if (!confirm("¿Seguro que quieres RECHAZAR esta orden?")) return;
+
+        await handleOrderAction(o.id, "reject");
+      });
+    }
     
     if (!isPending) {
       tr.classList.add("order-disabled");
