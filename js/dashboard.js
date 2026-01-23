@@ -43,8 +43,6 @@ async function buy(raffleId) {
     return;
   }
 
-  if (!number) return;
-
   const res = await apiFetch("/api/orders", {
     method: "POST",
     body: JSON.stringify({
