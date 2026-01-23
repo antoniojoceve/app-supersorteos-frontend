@@ -50,6 +50,7 @@ async function buy(raffleId) {
       ticket_count: ticketCount,
       payment_method: "manual",
       payment_reference: "test",
+      receipt_url: "test"
     })
   });
 
