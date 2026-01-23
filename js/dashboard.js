@@ -36,15 +36,23 @@ async function loadRaffles() {
 }
 
 async function buy(raffleId) {
-  const number = prompt("¿Qué número quieres?");
+
+  const ticketCount = parseInt(prompt("¿Cuántos números quieres?"), 10);
+  if (!ticketCount || ticketCount <= 0) {
+    alert("Cantidad inválida");
+    return;
+  }
+
   if (!number) return;
 
   const res = await apiFetch("/api/orders", {
     method: "POST",
     body: JSON.stringify({
       raffle_id: raffleId,
-      number,
-    }),
+      ticket_count: ticketCount,
+      payment_method: "manual",
+      payment_reference: "test",
+    })
   });
 
   const data = await res.json();
