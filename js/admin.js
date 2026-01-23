@@ -1,6 +1,21 @@
 import { apiFetch } from "./api.js";
 import { getUser, logout } from "./authService.js";
 
+function getStatusLabel(status) {
+  switch (status) {
+    case "pending":
+      return "🕒 Pendiente";
+    case "approved":
+      return "✅ Aprobada";
+    case "rejected":
+      return "❌ Rechazada";
+    case "expired":
+      return "⌛ Expirada";
+    default:
+      return status;
+  }
+}
+
 const user = getUser();
 
 if (!user || user.role !== "admin") {
@@ -21,7 +36,7 @@ async function loadRaffles() {
       <strong>${r.title}</strong>
       <p>Precio: $${r.price_per_ticket}</p>
       <p>Números: ${r.total_numbers}</p>
-      <p>Estado: ${r.status}</p>
+      <p>Estado: ${getStatusLabel(r.status)}</p>
     `;
     container.appendChild(div);
   });
@@ -57,8 +72,14 @@ document.getElementById("raffleForm").addEventListener("submit", async (e) => {
 
 async function loadOrders() {
   const res = await apiFetch("/api/orders");
+  let orders;
 
-  const orders = await res.json();
+  try {
+    orders = await res.json();
+  } catch {
+    console.error("Respuesta inválida del backend");
+    return;
+  }
 
   if (!Array.isArray(orders)) {
     console.error("Orders no es un array:", orders);
@@ -70,13 +91,20 @@ async function loadOrders() {
 
   orders.forEach((o) => {
     const tr = document.createElement("tr");
+    const isPending = o.payment_status === "pending";
+
     tr.innerHTML = `
       <td>${o.raffle_title}</td>
       <td>${o.user_email}</td>
       <td>$${o.total_amount}</td>
-      <td>${o.payment_status}</td>
+      <td>${getStatusLabel(o.payment_status)}</td>
       <td>${new Date(o.created_at).toLocaleString()}</td>
     `;
+    
+    if (!isPending) {
+      tr.classList.add("order-disabled");
+    }
+
     tbody.appendChild(tr);
   });
 }

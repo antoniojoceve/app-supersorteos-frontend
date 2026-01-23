@@ -35,3 +35,8 @@ th {
   background: #222;
   color: white;
 }
+
+.order-disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
