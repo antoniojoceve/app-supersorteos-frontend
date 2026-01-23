@@ -21,10 +21,17 @@ async function loadRaffles() {
       <h3>${r.title}</h3>
       <p>Precio: $${r.price_per_ticket}</p>
       <p>Números: ${r.total_numbers}</p>
-      <button onclick="buy('${r.id}')">Comprar</button>
+      <button class="buy-btn" data-id="${r.id}">Comprar</button>
     `;
 
     container.appendChild(div);
+    
+    const btn = div.querySelector(".buy-btn");
+
+    btn.addEventListener("click", () => {
+      buy(r.id);
+    });
+
   });
 }
 
